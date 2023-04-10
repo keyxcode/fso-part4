@@ -40,7 +40,29 @@ const mostBlogs = (blogs) => {
 
 const mostLikes = (blogs) => {
   if (blogs.length === 0) return undefined;
-  return 1;
+
+  const authorLikes = new Map();
+
+  blogs.forEach((blog) => {
+    const { author } = blog;
+    const { likes } = blog;
+
+    if (authorLikes.has(author)) {
+      const updatedLikes = authorLikes.get(author) + likes;
+      authorLikes.set(author, updatedLikes);
+    } else {
+      authorLikes.set(author, likes);
+    }
+  });
+
+  const authorMostLikes = [...authorLikes.entries()].reduce((prev, current) =>
+    prev[1] > current[1] ? prev : current
+  );
+
+  return {
+    author: authorMostLikes[0],
+    likes: authorMostLikes[1],
+  };
 };
 
 module.exports = {
