@@ -28,6 +28,12 @@ test("all blogs are returned", async () => {
   expect(response.body).toHaveLength(helper.initialBlogs.length);
 });
 
+test("blogs are returned with id prop", async () => {
+  const response = await api.get("/api/blogs");
+
+  response.body.forEach((blog) => expect(blog.id).toBeDefined());
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
