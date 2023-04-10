@@ -77,6 +77,39 @@ test("likes default to 0 if missing", async () => {
   expect(newBlogFromDb.likes).toBe(0);
 });
 
+test("400 if title is missing", async () => {
+  const newBlog = {
+    author: "Cadence Phan",
+    url: "https://google.com/",
+    likes: 3
+  };
+
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(400)
+
+  const blogsAtTheEnd = await helper.blogsInDb();
+  expect(blogsAtTheEnd).toHaveLength(helper.initialBlogs.length);
+});
+
+test("400 if  url is missing", async () => {
+  const newBlog = {
+    title: "How to play jazz"
+    author: "Cadence Phan",
+    url: "https://google.com/",
+    likes: 3
+  };
+
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(400)
+
+  const blogsAtTheEnd = await helper.blogsInDb();
+  expect(blogsAtTheEnd).toHaveLength(helper.initialBlogs.length);
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
