@@ -133,7 +133,7 @@ describe("update info of a blog post", () => {
     await api
       .put(`/api/blogs/${blogToUpdate.id}`)
       .send(updatedContent)
-      .expect(204);
+      .expect(200);
 
     const blogsAtEnd = await helper.blogsInDb();
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
