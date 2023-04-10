@@ -81,13 +81,10 @@ test("400 if title is missing", async () => {
   const newBlog = {
     author: "Cadence Phan",
     url: "https://google.com/",
-    likes: 3
+    likes: 3,
   };
 
-  await api
-    .post("/api/blogs")
-    .send(newBlog)
-    .expect(400)
+  await api.post("/api/blogs").send(newBlog).expect(400);
 
   const blogsAtTheEnd = await helper.blogsInDb();
   expect(blogsAtTheEnd).toHaveLength(helper.initialBlogs.length);
@@ -95,16 +92,12 @@ test("400 if title is missing", async () => {
 
 test("400 if  url is missing", async () => {
   const newBlog = {
-    title: "How to play jazz"
+    title: "How to play jazz",
     author: "Cadence Phan",
-    url: "https://google.com/",
-    likes: 3
+    likes: 3,
   };
 
-  await api
-    .post("/api/blogs")
-    .send(newBlog)
-    .expect(400)
+  await api.post("/api/blogs").send(newBlog).expect(400);
 
   const blogsAtTheEnd = await helper.blogsInDb();
   expect(blogsAtTheEnd).toHaveLength(helper.initialBlogs.length);
