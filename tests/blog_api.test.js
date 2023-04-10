@@ -34,6 +34,27 @@ test("blogs are returned with id prop", async () => {
   response.body.forEach((blog) => expect(blog.id).toBeDefined());
 });
 
+test("a valid blog can be added", async () => {
+  const newBlog = {
+    title: "How to play jazz",
+    author: "Cadence Phan",
+    url: "https://google.com/",
+    likes: 3,
+  };
+
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const blogsAtTheEnd = await helper.blogsInDb();
+  expect(blogsAtTheEnd).toHaveLength(helper.initialBlogs.length + 1);
+
+  const contents = blogsAtTheEnd.map((b) => b.title);
+  expect(contents).toContain("How to play jazz");
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
