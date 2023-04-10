@@ -7,3 +7,13 @@ Content-Type: application/json
     "url": "http://google.com",
     "likes": 3
 }
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Missing Like",
+    "author": "Lissing Mike",
+    "url": "http://google.com"
+}
