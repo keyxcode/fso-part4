@@ -15,11 +15,17 @@ beforeEach(async () => {
   await Promise.all(promiseArray);
 }, 100000);
 
-test("blogs are returned as json and with the right number of posts", async () => {
+test("blogs are returned as json", async () => {
   await api
     .get("/api/blogs")
     .expect(200)
     .expect("Content-Type", /application\/json/);
+});
+
+test("all blogs are returned", async () => {
+  const response = await api.get("/api/blogs");
+
+  expect(response.body).toHaveLength(helper.initialBlogs.length);
 });
 
 afterAll(async () => {

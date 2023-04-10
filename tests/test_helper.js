@@ -38,4 +38,10 @@ const initialBlogs = [
     likes: 2,
   },
 ];
-module.exports = { initialBlogs };
+
+const blogsInDb = async () => {
+  const blogs = await Blog.find({});
+  return blogs.map((note) => note.toJSON());
+};
+
+module.exports = { initialBlogs, blogsInDb };
