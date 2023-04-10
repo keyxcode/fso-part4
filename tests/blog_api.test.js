@@ -55,6 +55,28 @@ test("a valid blog can be added", async () => {
   expect(contents).toContain("How to play jazz");
 });
 
+test("likes default to 0 if missing", async () => {
+  const newBlog = {
+    title: "How to play jazz",
+    author: "Cadence Phan",
+    url: "https://google.com/",
+  };
+
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const blogsAtTheEnd = await helper.blogsInDb();
+  expect(blogsAtTheEnd).toHaveLength(helper.initialBlogs.length + 1);
+
+  const newBlogFromDb = blogsAtTheEnd.find(
+    (b) => b.title === "How to play jazz"
+  );
+  expect(newBlogFromDb.likes).toBe(0);
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
