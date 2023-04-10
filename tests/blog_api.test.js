@@ -108,14 +108,12 @@ describe("deletion of a blog post", () => {
     const blogsAtStart = await helper.blogsInDb();
     const blogToDelete = blogsAtStart[0];
 
-    await api.delete(`/api/notes/${blogToDelete.id}`).expect(204);
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
 
     const blogsAtEnd = await helper.blogsInDb();
-
-    expect(blogsAtEnd).toHaveLength(helper.initialNotes.length - 1);
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
 
     const titles = blogsAtEnd.map((b) => b.title);
-
     expect(titles).not.toContain(blogToDelete.title);
   });
 });
