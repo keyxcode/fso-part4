@@ -38,12 +38,15 @@ const mostBlogs = (blogs) => {
   };
 };
 
-// const mostLikes = (blogs) => {};
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) return undefined;
+  return 1;
+};
 
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
-  // mostLikes,
+  mostLikes,
 };
