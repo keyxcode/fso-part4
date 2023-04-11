@@ -26,11 +26,14 @@ const errorHandler = (error, request, response, next) => {
 
 const tokenExtractor = (request, response, next) => {
   const authorization = request.get("authorization");
+
+  if (!authorization) return response.status(401).end();
+
   if (authorization && authorization.startsWith("Bearer ")) {
     request.token = authorization.replace("Bearer ", "");
   }
 
-  next();
+  return next();
 };
 
 const userExtractor = async (request, response, next) => {

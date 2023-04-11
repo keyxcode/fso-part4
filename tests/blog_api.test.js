@@ -69,6 +69,19 @@ describe("addition of a new blog", () => {
     expect(contents).toContain("How to play jazz");
   });
 
+  test("blog with bad token can't be added", async () => {
+    const newBlog = {
+      title: "How to play jazz",
+      url: "https://google.com/",
+      likes: 3,
+    };
+
+    await api.post("/api/blogs").send(newBlog).expect(401);
+
+    const blogsAtTheEnd = await helper.blogsInDb();
+    expect(blogsAtTheEnd).toHaveLength(helper.initialBlogs.length);
+  });
+
   test("likes default to 0 if missing", async () => {
     const newBlog = {
       title: "How to play jazz",
