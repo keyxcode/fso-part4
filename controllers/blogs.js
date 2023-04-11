@@ -11,9 +11,7 @@ blogsRouter.get("/", async (request, response) => {
 });
 
 blogsRouter.post("/", async (request, response) => {
-  const { body } = request;
-
-  const { title, url, likes } = body;
+  const { title, url, likes } = request.body;
   if (!title || !url) return response.status(400).end();
 
   const decodedToken = jwt.verify(request.token, process.env.SECRET);
@@ -58,8 +56,21 @@ blogsRouter.put("/:id", async (request, response) => {
 });
 
 blogsRouter.delete("/:id", async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id);
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: "token invalid" });
+  }
 
+  const user = await User.findById(decodedToken.id);
+  const blog = await Blog.findById(request.params.id);
+
+  if (user.id.toString() !== blog.user.toString()) {
+    return response
+      .status(401)
+      .json({ error: "current user is not blog author" });
+  }
+
+  await Blog.findByIdAndRemove(request.params.id);
   return response.status(204).end();
 });
 
