@@ -7,11 +7,23 @@ const User = require("../models/user");
 
 const api = supertest(app);
 
+let token;
+
 beforeEach(async () => {
   await Blog.deleteMany({});
   await Blog.insertMany(helper.initialBlogs);
 
   await User.deleteMany({});
+
+  const user = {
+    username: "test123",
+    name: "test123",
+    password: "12345",
+  };
+  await api.post("/api/users").send(user);
+
+  const response = await api.post("/api/login").send(user);
+  token = response.body.token;
 }, 100000);
 
 describe("when there are initially some blogs saved", () => {
@@ -45,6 +57,7 @@ describe("addition of a new blog", () => {
 
     await api
       .post("/api/blogs")
+      .set("Authorization", `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect("Content-Type", /application\/json/);
@@ -64,6 +77,7 @@ describe("addition of a new blog", () => {
 
     await api
       .post("/api/blogs")
+      .set("Authorization", `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect("Content-Type", /application\/json/);
@@ -107,7 +121,10 @@ describe("deletion of a blog post", () => {
     const blogsAtStart = await helper.blogsInDb();
     const blogToDelete = blogsAtStart[0];
 
-    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(204);
 
     const blogsAtEnd = await helper.blogsInDb();
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
