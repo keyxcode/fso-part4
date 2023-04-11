@@ -3,12 +3,15 @@ const supertest = require("supertest");
 const app = require("../app");
 const helper = require("./test_helper");
 const Blog = require("../models/blog");
+const User = require("../models/user");
 
 const api = supertest(app);
 
 beforeEach(async () => {
   await Blog.deleteMany({});
   await Blog.insertMany(helper.initialBlogs);
+
+  await User.deleteMany({});
 }, 100000);
 
 describe("when there are initially some blogs saved", () => {
@@ -140,6 +143,65 @@ describe("update info of a blog post", () => {
 
     const titles = blogsAtEnd.map((b) => b.title);
     expect(titles).toContain(updatedContent.title);
+  });
+});
+
+describe("addition of a new user", () => {
+  test("a valid user can be added", async () => {
+    const newUser = {
+      username: "test",
+      name: "test_user",
+      password: "123456",
+    };
+
+    await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
+
+    const usersAtTheEnd = await helper.usersInDb();
+    expect(usersAtTheEnd).toHaveLength(1);
+
+    const userNames = usersAtTheEnd.map((u) => u.name);
+    expect(userNames).toContain("test");
+  });
+
+  test("400 if username is missing", async () => {
+    const newUser = {
+      name: "test_user",
+      password: "123456",
+    };
+
+    await api.post("/api/users").send(newUser).expect(400);
+
+    const usersAtTheEnd = await helper.usersInDb();
+    expect(usersAtTheEnd).toHaveLength(0);
+  });
+
+  test("400 if password is missing", async () => {
+    const newUser = {
+      username: "test",
+      name: "test_user",
+    };
+
+    await api.post("/api/users").send(newUser).expect(400);
+
+    const usersAtTheEnd = await helper.usersInDb();
+    expect(usersAtTheEnd).toHaveLength(0);
+  });
+
+  test("400 if password is less than 3 characters", async () => {
+    const newUser = {
+      username: "test",
+      name: "test_user",
+      password: "12",
+    };
+
+    await api.post("/api/users").send(newUser).expect(400);
+
+    const usersAtTheEnd = await helper.usersInDb();
+    expect(usersAtTheEnd).toHaveLength(0);
   });
 });
 
