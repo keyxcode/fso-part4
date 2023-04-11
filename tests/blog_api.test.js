@@ -163,7 +163,7 @@ describe("addition of a new user", () => {
     const usersAtTheEnd = await helper.usersInDb();
     expect(usersAtTheEnd).toHaveLength(1);
 
-    const userNames = usersAtTheEnd.map((u) => u.name);
+    const userNames = usersAtTheEnd.map((u) => u.username);
     expect(userNames).toContain("test");
   });
 
