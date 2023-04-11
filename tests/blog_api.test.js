@@ -131,20 +131,47 @@ describe("addition of a new blog", () => {
 });
 
 describe("deletion of a blog post", () => {
-  test("succeeds with status code 204 if id is valid", async () => {
-    const blogsAtStart = await blogsInDb();
-    const blogToDelete = blogsAtStart[0];
+  // create a post
+  let id;
+  beforeEach(async () => {
+    await Blog.deleteMany({});
+
+    const blog = {
+      title: "React patterns",
+      author: "Michael Chan",
+      url: "https://reactpatterns.com/",
+      likes: 7,
+    };
+
+    const response = await api
+      .post("/api/blogs")
+      .set("Authorization", authHeader)
+      .send(blog);
+
+    id = response.body.id;
+  });
+
+  test("can be deleted by the creator", async () => {
+    const blogsBefore = await blogsInDb();
 
     await api
-      .delete(`/api/blogs/${blogToDelete.id}`)
+      .delete(`/api/blogs/${id}`)
       .set("Authorization", authHeader)
       .expect(204);
 
-    const blogsAtEnd = await blogsInDb();
-    expect(blogsAtEnd).toHaveLength(initialBlogs.length - 1);
+    const blogsAfter = await blogsInDb();
 
-    const titles = blogsAtEnd.map((b) => b.title);
-    expect(titles).not.toContain(blogToDelete.title);
+    expect(blogsAfter).toHaveLength(blogsBefore.length - 1);
+  });
+
+  test("can not be deleted without valid auth header", async () => {
+    const blogsBefore = await blogsInDb();
+
+    await api.delete(`/api/blogs/${id}`).expect(401);
+
+    const blogsAfter = await blogsInDb();
+
+    expect(blogsAfter).toHaveLength(blogsBefore.length);
   });
 });
 
