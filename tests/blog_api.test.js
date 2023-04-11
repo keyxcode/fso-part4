@@ -39,7 +39,6 @@ describe("addition of a new blog", () => {
   test("a valid blog can be added", async () => {
     const newBlog = {
       title: "How to play jazz",
-      author: "Cadence Phan",
       url: "https://google.com/",
       likes: 3,
     };
@@ -60,7 +59,6 @@ describe("addition of a new blog", () => {
   test("likes default to 0 if missing", async () => {
     const newBlog = {
       title: "How to play jazz",
-      author: "Cadence Phan",
       url: "https://google.com/",
     };
 
@@ -81,7 +79,6 @@ describe("addition of a new blog", () => {
 
   test("400 if title is missing", async () => {
     const newBlog = {
-      author: "Cadence Phan",
       url: "https://google.com/",
       likes: 3,
     };
@@ -95,7 +92,6 @@ describe("addition of a new blog", () => {
   test("400 if  url is missing", async () => {
     const newBlog = {
       title: "How to play jazz",
-      author: "Cadence Phan",
       likes: 3,
     };
 

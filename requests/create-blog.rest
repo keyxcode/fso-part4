@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY0MzRjZjhiODlmM2RjNjVlY2VhNTk0MiIsImlhdCI6MTY4MTIwNDU0NH0.VJCi1HEF3sSnuHinGVpLEp1VqDsjhVegbrl7vRzc7qY
 
 {
     "title": "ChatGPT",
-    "author": "Bing",
     "url": "http://google.com",
     "likes": 3
 }
@@ -11,19 +11,19 @@ Content-Type: application/json
 ###
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QyIiwiaWQiOiI2NDM1MDYyMWExZGY4ZGM1YTQzM2JiZjYiLCJpYXQiOjE2ODEyMDQ2MjF9.hWCmmE0OG5S8FxxjxLCz19oZUozIzsS69YjrHiRdNvA
 
 {
     "title": "Missing Like",
-    "author": "Lissing Mike",
     "url": "http://google.com"
 }
 
 ###
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QzIiwiaWQiOiI2NDM1MDYyNGExZGY4ZGM1YTQzM2JiZmEiLCJpYXQiOjE2ODEyMDQ2NTd9.3UPWp-HcctjXM5tMQlY8xLh9nIxcyiyp1mvyrQTt1qc
 
 {
-    "title": "I have a user",
-    "author": "who is my author",
+    "title": "I'm a blog",
     "url": "http://google.com"
 }
