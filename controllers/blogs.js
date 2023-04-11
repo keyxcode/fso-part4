@@ -5,7 +5,7 @@ const Blog = require("../models/blog");
 const { userExtractor } = require("../utils/middleware");
 
 blogsRouter.get("/", async (request, response) => {
-  const blogs = await Blog.find({}).populate("user");
+  const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 });
   response.json(blogs);
 });
 
@@ -14,6 +14,9 @@ blogsRouter.post("/", userExtractor, async (request, response) => {
   if (!title || !url) return response.status(400).end();
 
   const { user } = request;
+  if (!user) {
+    return response.status(401).json({ error: "operation not permitted" });
+  }
 
   const blog = new Blog({
     title,
@@ -53,13 +56,14 @@ blogsRouter.delete("/:id", userExtractor, async (request, response) => {
   const { user } = request;
   const blog = await Blog.findById(request.params.id);
 
-  if (user.id.toString() !== blog.user.toString()) {
-    return response
-      .status(401)
-      .json({ error: "current user is not blog author" });
+  if (!user || user.id.toString() !== blog.user.toString()) {
+    return response.status(401).json({ error: "operation not allowed" });
   }
 
-  await Blog.findByIdAndRemove(request.params.id);
+  user.blogs = user.blogs.filter((b) => b.toString() !== blog.id.toString());
+  await user.save();
+  await blog.remove();
+
   return response.status(204).end();
 });
 
