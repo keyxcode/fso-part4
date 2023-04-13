@@ -10,7 +10,7 @@ blogsRouter.get("/", async (request, response) => {
 });
 
 blogsRouter.post("/", userExtractor, async (request, response) => {
-  const { title, url, likes } = request.body;
+  const { title, url, author, likes } = request.body;
   if (!title || !url) return response.status(400).end();
 
   const { user } = request;
@@ -20,7 +20,7 @@ blogsRouter.post("/", userExtractor, async (request, response) => {
 
   const blog = new Blog({
     title,
-    author: user.username,
+    author,
     url,
     likes: likes || 0,
     user: user.id,
