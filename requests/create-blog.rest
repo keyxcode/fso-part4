@@ -27,3 +27,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc
     "title": "I'm a blog",
     "url": "http://google.com"
 }
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QyIiwiaWQiOiI2NDM1MDYyMWExZGY4ZGM1YTQzM2JiZjYiLCJpYXQiOjE2ODEzODA5ODh9.vYaSMyBhn1IHDJSV3CEfNxZUgemYMDyF7zmZnahlmjI
+
+{
+    "title": "I'm user test2",
+    "author": "mr test2",
+    "url": "http://google.com"
+}

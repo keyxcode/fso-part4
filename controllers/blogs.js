@@ -11,7 +11,7 @@ blogsRouter.get("/", async (request, response) => {
 
 blogsRouter.post("/", userExtractor, async (request, response) => {
   const { title, url, author, likes } = request.body;
-  if (!title || !url) return response.status(400).end();
+  if (!title || !author) return response.status(400).end();
 
   const { user } = request;
   if (!user) {
@@ -23,7 +23,7 @@ blogsRouter.post("/", userExtractor, async (request, response) => {
     author,
     url,
     likes: likes || 0,
-    user: user.id,
+    user,
   });
 
   const savedBlog = await blog.save();
@@ -33,8 +33,14 @@ blogsRouter.post("/", userExtractor, async (request, response) => {
   return response.status(201).json(savedBlog);
 });
 
-blogsRouter.put("/:id", async (request, response) => {
+blogsRouter.put("/:id", userExtractor, async (request, response) => {
   const { title, author, url, likes } = request.body;
+  if (!title || !author) return response.status(400).end();
+
+  const { user } = request;
+  if (!user) {
+    return response.status(401).json({ error: "operation not permitted" });
+  }
 
   const updatedContent = {
     title,
@@ -49,7 +55,7 @@ blogsRouter.put("/:id", async (request, response) => {
     { new: true, runValidators: true, context: "query" }
   );
 
-  response.json(updatedBlog);
+  return response.json(updatedBlog);
 });
 
 blogsRouter.delete("/:id", userExtractor, async (request, response) => {
