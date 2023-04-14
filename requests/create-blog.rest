@@ -1,6 +1,6 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY0MzRjZjhiODlmM2RjNjVlY2VhNTk0MiIsImlhdCI6MTY4MTIwNDU0NH0.VJCi1HEF3sSnuHinGVpLEp1VqDsjhVegbrl7vRzc7qY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY0Mzk1OTU4YWQzOTNiMjE4ZDhhZGM2YSIsImlhdCI6MTY4MTQ4MDA2MH0.jd5fkfmGebXrfJDuoq9S9DH-SGsDYvmL_KMMu_KKFlU
 
 {
     "title": "ChatGPT",
